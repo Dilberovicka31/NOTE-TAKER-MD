@@ -1,3 +1,5 @@
+//Setting up express server
+
 const express = require("express");
 const path = require("path");
 const fs = require("fs");
@@ -13,42 +15,68 @@ app.use(express.json());
 //Routes
 
 app.get("/api/notes", function (req, res) {
+  //Read file
   const readFile = JSON.parse(
     fs.readFileSync("db/db.json", {
       encoding: "utf-8",
     })
   );
-  console.log(readFile);
+
+  //Send JSON response
   res.json(readFile);
 });
 
 app.post("/api/notes", function (req, res) {
-  console.log(req.body);
-
+  //Read file
   const readFile = JSON.parse(
     fs.readFileSync("db/db.json", {
       encoding: "utf-8",
     })
   );
+
+  // Giving each note a unique id
   const noteSave = {
     title: req.body.title,
     text: req.body.text,
     id: nanoid(),
   };
+
+  //Push the new object into the array
   readFile.push(noteSave);
 
+  // Write file
   fs.writeFileSync("db/db.json", JSON.stringify(readFile));
   res.json(readFile);
 });
 
+//Route to delete the note
 app.delete("/api/notes/:id", function (req, res) {
-  console.log(req.params.id);
-  //Access the :id from req.params.id
-  //Use fs module to read the file
-  //Then parse teh file contents  JSON.parse
-  //Use the array.filter to filter out th id
-  // myArray = myArray.filter(({ id }) => id !== req.params.id);
+  // Read file
+
+  //New array
+  let newNotes = [];
+  let readFile = JSON.parse(
+    fs.readFileSync("db/db.json", {
+      encoding: "utf-8",
+    })
+  );
+
+  //New array equals read file
+  newNotes = readFile;
+
+  //Defining the id
+  const checkId = req.params.id;
+
+  //Filtering the id out
+  newNotes = newNotes.filter(({ id }) => id !== checkId);
+
+  res.json(newNotes);
+
+  //Rewriting the notes after deleting the note
+  fs.writeFileSync("db/db.json", JSON.stringify(newNotes));
 });
+
+//HTML routes
 
 app.get("/notes", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/notes.html"));
