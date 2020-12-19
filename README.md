@@ -3,7 +3,6 @@
 - [Description](#Description)
 - [Installation](#Installation)
 - [User-Story](#User-Story)
-- [License](#License)
 - [Tests](#Tests)
 - [Questions](#Questions)
 
@@ -15,7 +14,7 @@ Application was created for users with busy schedule, who need to keep track of 
 
 ## Installation
 
-To install application you will need Node JS and Express.
+To install application you will need Node JS and Express (For Express just type in the terminal npm i express to install).
 
 ## User-Story
 
